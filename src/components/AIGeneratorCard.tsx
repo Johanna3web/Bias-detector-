@@ -2,7 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
-import { LucideIcon } from "lucide-react";
+import { LucideIcon, Copy, Download, Check } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -24,6 +24,7 @@ export const AIGeneratorCard = ({
   const [prompt, setPrompt] = useState("");
   const [result, setResult] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const handleGenerate = async () => {
     if (!prompt.trim()) {
@@ -48,6 +49,25 @@ export const AIGeneratorCard = ({
       toast.error("Failed to generate content. Please try again.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleCopy = () => {
+    if (result && type !== "image") {
+      navigator.clipboard.writeText(result);
+      setCopied(true);
+      toast.success("Copied to clipboard!");
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  const handleDownload = () => {
+    if (result && type === "image") {
+      const link = document.createElement('a');
+      link.href = result;
+      link.download = `generated-image-${Date.now()}.png`;
+      link.click();
+      toast.success("Image downloaded!");
     }
   };
 
@@ -80,6 +100,29 @@ export const AIGeneratorCard = ({
 
       {result && (
         <div className="mt-4 p-4 rounded-lg bg-secondary/50 border-2 border-primary/20 animate-fade-in">
+          <div className="flex justify-end mb-2">
+            {type === "image" ? (
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={handleDownload}
+                className="gap-2"
+              >
+                <Download className="w-4 h-4" />
+                Download
+              </Button>
+            ) : (
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={handleCopy}
+                className="gap-2"
+              >
+                {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                {copied ? "Copied!" : "Copy"}
+              </Button>
+            )}
+          </div>
           {type === "image" ? (
             <img 
               src={result} 

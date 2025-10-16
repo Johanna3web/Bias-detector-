@@ -1,11 +1,39 @@
 import { Sparkles, ImageIcon, Code, Upload } from "lucide-react";
 import { AIGeneratorCard } from "@/components/AIGeneratorCard";
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { VoiceCommands } from "@/components/VoiceCommands";
+import { TodoList } from "@/components/TodoList";
+import { Notes } from "@/components/Notes";
+import { Reminders } from "@/components/Reminders";
+import { WeatherWidget } from "@/components/WeatherWidget";
+import { TimeConverter } from "@/components/TimeConverter";
+import { PersonaSelector } from "@/components/PersonaSelector";
+import { ConversationMemory } from "@/components/ConversationMemory";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 
 const Index = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+
+  useEffect(() => {
+    const handleOnline = () => {
+      setIsOnline(true);
+      toast.success("You're back online!");
+    };
+    const handleOffline = () => {
+      setIsOnline(false);
+      toast.error("You're offline. Some features may be limited.");
+    };
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -71,33 +99,75 @@ const Index = () => {
         </div>
       </div>
 
-      {/* AI Tools Grid */}
-      <div className="container mx-auto px-4 py-16">
-        <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
-          <AIGeneratorCard
-            title="Text Generator"
-            description="Create engaging content, stories, and articles with AI-powered writing"
-            icon={Sparkles}
-            type="text"
-            placeholder="Describe the text you want to generate... (e.g., 'Write a blog post about sustainable living')"
-          />
-          
-          <AIGeneratorCard
-            title="Image Generator"
-            description="Transform your ideas into stunning visuals and artwork"
-            icon={ImageIcon}
-            type="image"
-            placeholder="Describe the image you want to create... (e.g., 'A serene mountain landscape at sunset')"
-          />
-          
-          <AIGeneratorCard
-            title="Code Generator"
-            description="Generate clean, efficient code snippets and solutions"
-            icon={Code}
-            type="code"
-            placeholder="Describe the code you need... (e.g., 'Create a React component for a todo list')"
-          />
+      {/* Status Indicator */}
+      {!isOnline && (
+        <div className="container mx-auto px-4 py-2">
+          <div className="bg-yellow-500/10 border-2 border-yellow-500/50 rounded-lg p-3 text-center">
+            <p className="text-yellow-600 dark:text-yellow-400 font-semibold">
+              ⚠️ Offline Mode - Some features may be limited
+            </p>
+          </div>
         </div>
+      )}
+
+      {/* Main Content Tabs */}
+      <div className="container mx-auto px-4 py-8">
+        <Tabs defaultValue="generators" className="w-full">
+          <TabsList className="grid w-full grid-cols-3 max-w-2xl mx-auto mb-8">
+            <TabsTrigger value="generators">AI Generators</TabsTrigger>
+            <TabsTrigger value="productivity">Productivity</TabsTrigger>
+            <TabsTrigger value="settings">Settings & Advanced</TabsTrigger>
+          </TabsList>
+
+          {/* AI Generators Tab */}
+          <TabsContent value="generators">
+            <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+              <AIGeneratorCard
+                title="Text Generator"
+                description="Create engaging content, stories, and articles with AI-powered writing"
+                icon={Sparkles}
+                type="text"
+                placeholder="Describe the text you want to generate... (e.g., 'Write a blog post about sustainable living')"
+              />
+              
+              <AIGeneratorCard
+                title="Image Generator"
+                description="Transform your ideas into stunning visuals and artwork"
+                icon={ImageIcon}
+                type="image"
+                placeholder="Describe the image you want to create... (e.g., 'A serene mountain landscape at sunset')"
+              />
+              
+              <AIGeneratorCard
+                title="Code Generator"
+                description="Generate clean, efficient code snippets and solutions"
+                icon={Code}
+                type="code"
+                placeholder="Describe the code you need... (e.g., 'Create a React component for a todo list')"
+              />
+            </div>
+          </TabsContent>
+
+          {/* Productivity Tab */}
+          <TabsContent value="productivity">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+              <VoiceCommands />
+              <Reminders />
+              <TodoList />
+              <Notes />
+              <WeatherWidget />
+              <TimeConverter />
+            </div>
+          </TabsContent>
+
+          {/* Settings & Advanced Tab */}
+          <TabsContent value="settings">
+            <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+              <PersonaSelector />
+              <ConversationMemory />
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
 
       {/* Footer */}
