@@ -4,7 +4,7 @@ AI-powered API for analyzing student performance and generating improvement sugg
 
 ## Features
 
-- **Student Analysis**: Analyze individual student performance across subjects
+- **Student Analysis**: Analyze individual student performance across subjects.
 - **Class Analysis**: Evaluate overall class performance and identify trends
 - **Improvement Suggestions**: Generate personalized improvement plans
 
