@@ -1,0 +1,92 @@
+{
+  "info": {
+    "name": "Student Management AI API",
+    "description": "API endpoints for student performance analysis",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": [""]
+        }
+      }
+    },
+    {
+      "name": "Analyze Student",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"John Doe\",\n  \"subjects\": [\n    {\n      \"name\": \"Mathematics\",\n      \"marks\": 85,\n      \"totalMarks\": 100\n    },\n    {\n      \"name\": \"Science\",\n      \"marks\": 72,\n      \"totalMarks\": 100\n    },\n    {\n      \"name\": \"English\",\n      \"marks\": 90,\n      \"totalMarks\": 100\n    }\n  ],\n  \"teacherComments\": \"Good participation in class, needs to focus more on Science\",\n  \"strengths\": \"Strong in problem-solving and creative writing\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/analyze-student",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "analyze-student"]
+        }
+      }
+    },
+    {
+      "name": "Analyze Class",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"className\": \"Grade 10A\",\n  \"subject\": \"Mathematics\",\n  \"students\": [\n    {\n      \"name\": \"John Doe\",\n      \"subjects\": [\n        {\n          \"name\": \"Mathematics\",\n          \"marks\": 85,\n          \"totalMarks\": 100\n        }\n      ]\n    },\n    {\n      \"name\": \"Jane Smith\",\n      \"subjects\": [\n        {\n          \"name\": \"Mathematics\",\n          \"marks\": 92,\n          \"totalMarks\": 100\n        }\n      ]\n    },\n    {\n      \"name\": \"Bob Johnson\",\n      \"subjects\": [\n        {\n          \"name\": \"Mathematics\",\n          \"marks\": 78,\n          \"totalMarks\": 100\n        }\n      ]\n    },\n    {\n      \"name\": \"Alice Williams\",\n      \"subjects\": [\n        {\n          \"name\": \"Mathematics\",\n          \"marks\": 45,\n          \"totalMarks\": 100\n        }\n      ]\n    }\n  ]\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/analyze-class",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "analyze-class"]
+        }
+      }
+    },
+    {
+      "name": "Suggest Improvements",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"studentName\": \"John Doe\",\n  \"currentPerformance\": \"Average\",\n  \"weaknesses\": [\n    \"Time management\",\n    \"Science concepts understanding\",\n    \"Test anxiety\"\n  ],\n  \"goals\": \"Improve Science grade to 80% and develop better study habits\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/suggest-improvements",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "suggest-improvements"]
+        }
+      }
+    }
+  ]
+}
